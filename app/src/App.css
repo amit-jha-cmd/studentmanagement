@@ -1,0 +1,30 @@
+body {
+  margin-top: 10px;
+  /* background: linear-gradient(white, rgb(136, 198, 213)) */
+}
+
+.navbar {
+  width: 110%;
+  position: fixed;
+  overflow: hidden;
+  z-index: 100;
+  top: 0;
+  font-size: 120%;
+  background: rgb(136, 198, 213) ;
+}
+
+.cards {
+  width: 97%;
+  margin-left: 1.5%;
+  margin-top: 40px;
+}
+
+.timeline {
+  margin: 50px;
+}
+
+.stdinfo {
+  width: 560px;
+  /* border: 1px solid black; */
+  margin-left: 20px;
+}
