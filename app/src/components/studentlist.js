@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { Grid, Menu, List, Segment, Button } from 'semantic-ui-react';
-import Student from './list';
+import React from 'react'
+import { Grid, Segment, Button } from 'semantic-ui-react';
+// import Student from './list';
 import Finalmarks from './finalmarkstable'
 
 const Studentlist = () => {

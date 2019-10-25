@@ -1,23 +1,16 @@
 import React, { Component } from 'react'
-import { Grid, Menu, List} from 'semantic-ui-react';
-import Student from './list';
+import { Grid, Menu} from 'semantic-ui-react';
+// import Student from './list';
 import Timeline from './dashboard';
 import About from './about';
 import Studentinfo from "./studentlist"
-
-
 
 export default class MenuExampleTabularOnLeft extends Component {
   state = { activeItem: 'Dashboard' }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
   render() {
     const { activeItem } = this.state
-    const Stdinfo = (props)=> (
-      <List items={[
-      <Student id="Amit Jha" usn="1PE17IS011" />,
-       <Student id="Aman Mittal" usn="1PE17IS010"/>
-      ]} />
-    );
+
 
     function Whattorender(props) {
       console.log(props.whatstate);

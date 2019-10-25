@@ -1,8 +1,9 @@
 body {
-  margin-top: 10px;
-  /* background: linear-gradient(white, rgb(136, 198, 213)) */
+  margin: 0px;
+  background-color: blue;
+  /* background: linear-gradient(blue, rgb(61, 24, 90)) */
 }
-
+/* rgb(136, 198, 213) */
 .navbar {
   width: 110%;
   position: fixed;
@@ -10,7 +11,7 @@ body {
   z-index: 100;
   top: 0;
   font-size: 120%;
-  background: rgb(136, 198, 213) ;
+  background: rgb(236, 236, 236) ;
 }
 
 .cards {

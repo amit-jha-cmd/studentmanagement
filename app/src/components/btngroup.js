@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Divider } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 
 const ButtonExampleGroupEqualWidth = () => (
   <div>

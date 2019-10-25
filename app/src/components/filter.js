@@ -2,28 +2,51 @@ import React, { Component } from 'react'
 import {
   Button,
   Checkbox,
-  Form,
   Input,
   Radio,
-  Select,
-  TextArea,
   Grid,
-  Segment
+  Segment,
+  Label
 } from 'semantic-ui-react';
-
-const sortby = [
-  { key: 'u', text: 'Usn', value: 'usn' },
-  { key: 'n', text: 'Name', value: 'name' },
-  { key: 'a', text: 'Attendance', value: 'attendance' }
-]
+import fetchData from './apicalls'
+var api = new fetchData()
+// const sortby = [
+//   { key: 'u', text: 'Usn', value: 'usn' },
+//   { key: 'n', text: 'Name', value: 'name' },
+//   { key: 'a', text: 'Attendance', value: 'attendance' }
+// ]
 
 class FormExampleFieldControl extends Component {
-  state = {}
+  constructor(props) {
+    super(props)
+    this.state = {
+      usn: " ",
+      attcheck: true,
+      name: " "
+    }
+    this.data = null
+    this.send = this.send.bind(this)
+  }
+  send() {
+    // var title = this.state;
+    // console.log(title)
+    var temp = api.withfilter(this.state.usn, this.state.name, this.state.attcheck)
+    // this.data = api.data;
+    // console.log(this.data)
+    temp.then((value) => {
+      // this.data = value
+      this.props.callback(value)
+    });
+    // this.props.callback(this.data)
+  }
+  handleChange = (e, { value }) => {
+    this.setState({ [e.target.name]: value })
+    // console.log(e.target.value)
 
-  handleChange = (e, { value }) => this.setState({ value })
+  }
 
   render() {
-    const { value } = this.state
+    // const { value } = this.state
     return (
       <Segment>
         <Grid>
@@ -31,37 +54,57 @@ class FormExampleFieldControl extends Component {
             <Grid.Column style={{ flex: 1 }}>
               <Grid.Row style={{ margin: 10 }}>
                 <Grid.Row>
-                <h2> <Checkbox defaultChecked /> Attendance</h2>
+                  <h2> Usn</h2>
                 </Grid.Row>
               </Grid.Row>
               <Grid.Row>
                 <Input
-                  placeholder="Default: 75%"
-                  style={{ margin: 10, width: "45%" }}
-                ></Input>
-                To
+                  // placeholder="Default: 75%"
+                  value={this.state.initatt}
+                  name='usn'
+                  style={{ margin: 10, width: "95%" }}
+                  onChange={this.handleChange}
+                // labelPosition="left"
+                // type="text"
+                >
+                  <input />
+                  {/* <Label>1PE</Label> */}
+                </Input>
+                {/* To
               <Input
                   placeholder="100%"
+                  value={this.state.finatt}
+                  name="finatt"
                   style={{ margin: 10, width: "45%" }}
-                ></Input>
+                  onChange={this.handleChange}
+                  labelPosition="right"
+                  type="text"
+                >
+                  <input />
+                  <Label>%</Label>
+                </Input> */}
               </Grid.Row>
-              <Grid.Row style={{margin: 20}}>
-                
+              <Grid.Row style={{ margin: 20 }}>
+                <Checkbox defaultChecked onClick={() => {
+                  if (this.state.attcheck === true) {
+                    this.state.attcheck = false
+                  }
+                  else {
+                    this.state.attcheck = true
+                  }
+                }} /><Label>By Name only</Label>
               </Grid.Row>
             </Grid.Column>
             <Grid.Column style={{ flex: 1 }}>
               <Grid.Row style={{ margin: 10 }}>
-                <h2 > <Checkbox defaultChecked /> Marks</h2>
+                <h2 > Name</h2>
               </Grid.Row>
               <Grid.Row>
                 <Input
-                  placeholder="Default: 12"
-                  style={{ margin: 10, width: "45%" }}
-                ></Input>
-                To
-              <Input
-                  placeholder="30"
-                  style={{ margin: 10, width: "45%" }}
+                  value={this.state.initmarks}
+                  name="name"
+                  onChange={this.handleChange}
+                  style={{ margin: 10, width: "95%" }}
                 ></Input>
               </Grid.Row>
             </Grid.Column>
@@ -69,49 +112,14 @@ class FormExampleFieldControl extends Component {
           <Grid.Row style={{ flex: 1, margin: 20 }}>
             <Grid.Column style={{ flex: 1 }}></Grid.Column>
             <Grid.Column style={{ flex: 1 }}>
-              <Button style={{ width: "100%" }}>Search</Button>
+              <Button style={{ width: "100%" }} onClick={() => this.send()}>Search</Button>
             </Grid.Column>
             <Grid.Column style={{ flex: 1 }}></Grid.Column>
           </Grid.Row>
         </Grid>
-
       </Segment>
     )
   }
 }
 
 export default FormExampleFieldControl
-
-
-{/* <Grid>
-        <Grid.Column>
-          <Grid>
-            <Grid.Column>
-              <Form style={{flex: 1, margin: 10, backgroundColor: "green"}}>
-                <Form.Group widths='equal'>
-                  <Form.Field
-                    control={Select}
-                    options={sortby}
-                    placeholder='Sort By'
-                  />
-                </Form.Group>
-                <Form.Field control={Button}>Submit</Form.Field>
-              </Form>
-            </Grid.Column>
-            <Grid.Row>
-              <Form>
-                <Form.Group widths='equal'>
-                  <Form.Field
-                    control={Select}
-                    options={sortby}
-                    placeholder='Sort By'
-                  />
-                </Form.Group>
-                <Form.Field control={Button}>Submit</Form.Field>
-              </Form>
-            </Grid.Row>
-          </Grid>
-
-        </Grid.Column>
-
-      </Grid> */}

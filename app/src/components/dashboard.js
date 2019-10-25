@@ -1,46 +1,86 @@
 import React from 'react';
 import Filter from './filter';
-import { Grid, Segment } from 'semantic-ui-react';
-import DashboardChart from './dashboardchart';
+import { Grid } from 'semantic-ui-react';
 import Stdlist from './list';
 // import { Http2ServerRequest } from 'http2';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
+import fetchData from './apicalls';
+
+class Board extends React.Component {
+    constructor(props) {
+        super(props)
+        this.datafromchild = this.datafromchild.bind(this)
+        this.Whichstudent = this.Whichstudent.bind(this)
+        this.dashboard = this.dashboard.bind(this)
+        this.state = {}
+    }
+
+    datafromchild = (data) => {
+        // console.log(data['data'].length)
+        this.setState({"some":data['data']['0'], "length": data['data'].length})
+        // console.log(this.state)
+    }
+
+    Whichstudent = (props) => {
+        console.log(this.state.length)
+        if (this.state.length === 1) {
+            return (
+                <Grid.Column style={{ flex: 1 }}>
+                    <Stdlist name={this.state.some.name} usn={this.state.some.usn} />
+                </Grid.Column>
+            )
+        }
+        return (
+            <Grid.Column style={{ flex: 1 }}>
+                {/* <Stdlist name={this.state.name} usn={this.state.usn} /> */}
+                {console.log("null part")}
+            </Grid.Column>
+        )
+
+    }
 
 
-const dashboard = (props) => {
-    return (
-        <Container style={{ margin: 30 }}>
-            <Row>
-                <Filter />
-            </Row>
-            <Row style={{marginTop: 30, marginLeft: 10}}>
-                <Grid>
-                    <Grid.Column style={{ flex: 1 }}>
-                        <Stdlist name={props.name} usn={props.usn} />
-                    </Grid.Column>
-                    <Grid.Column style={{ flex: 1 }}>
-                        <Stdlist name={props.name} usn={props.usn} />
-                    </Grid.Column>
-                    <Grid.Column style={{ flex: 1 }}>
-                        <Stdlist name={props.name} usn={props.usn} />
-                    </Grid.Column>
-                    <Grid.Column style={{ flex: 1 }}>
-                        <Stdlist name={props.name} usn={props.usn} />
-                    </Grid.Column>
-                    <Grid.Column style={{ flex: 1 }}>
-                        <Stdlist name={props.name} usn={props.usn} />
-                    </Grid.Column>
-                    <Grid.Column style={{ flex: 1 }}>
-                        <Stdlist name={props.name} usn={props.usn} />
-                    </Grid.Column>
-                </Grid>
-            </Row>
-        </Container>
+    dashboard = (props) => {
+        return (
+            <Container style={{ margin: 30 }}>
+                <Row>
+                    <Filter callback={this.datafromchild} />
+                </Row>
+                <Row style={{ marginTop: 30, marginLeft: 30 }}>
+                    <Grid>
+                        {/* <Grid.Column style={{ flex: 1 }}>
+                            <Stdlist name={this.state.name} usn={this.state.usn} />
+                        </Grid.Column> */}
+                        <this.Whichstudent />
+                        {/* <Grid.Column style={{ flex: 1 }}>
+                            <Stdlist name={props.name} usn={props.usn} />
+                        </Grid.Column>
+                        <Grid.Column style={{ flex: 1 }}>
+                            <Stdlist name={props.name} usn={props.usn} />
+                        </Grid.Column>
+                        <Grid.Column style={{ flex: 1 }}>
+                            <Stdlist name={props.name} usn={props.usn} />
+                        </Grid.Column>
+                        <Grid.Column style={{ flex: 1 }}>
+                            <Stdlist name={props.name} usn={props.usn} />
+                        </Grid.Column> */}
+                    </Grid>
+                </Row>
+            </Container>
 
-    );
-};
+        );
+    };
 
-export default dashboard;
+    render() {
+        return (
+            this.dashboard()
+        )
+    }
+}
+
+
+
+export default Board;
 
 
 
