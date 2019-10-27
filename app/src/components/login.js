@@ -8,13 +8,23 @@ const api = new fetchData()
 class Login extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { "isadmin": false }
+        this.state = {
+            "isadmin": false,
+            "admin": false,
+            "loginas": "Login as Student/Teacher",
+            "failloginmsg": "Incorrect Username or password",
+            "loginfail": false
+        }
         this.FormExampleForm = this.FormExampleForm.bind(this)
         this.manageChange = this.manageChange.bind(this)
         this.statusLogin = this.statusLogin.bind(this)
         this.signup = this.signup.bind(this)
+        this.adminlogin = this.adminlogin.bind(this)
     }
 
+    adminlogin = () => {
+        this.props.history.push("/admin")
+    }
 
     manageChange = (e) => {
         this.state[e.target.name] = e.target.value
@@ -23,17 +33,21 @@ class Login extends React.Component {
     signup = () => {
         this.props.history.push("/signup")
     }
-    
+
     statusLogin = () => {
         api.login(this.state.username,
             this.state.password,
             this.state.isadmin).then((value) => {
                 console.log(value)
-                if (value.status === "success") {
+                if (value.status === "success" && value.who === "student/teacher") {
                     console.log(this.props)
                     this.props.history.push("/user")
                 }
+                else if (value.status === "success" && value.who === "admin") {
+                    this.props.history.push("/admin")
+                }
                 else {
+                    this.setState({ loginfail: true })
                     console.log("trouble login in")
                 }
             })
@@ -49,8 +63,8 @@ class Login extends React.Component {
                 margin: 0,
                 backgroundColor: "blue"
             }}>
-                <h1 style={{ color: "white" }}>STUDENT MANAGEMENT SYSTEM</h1>
-                <Segment style={{ width: "20%", marginTop: "-400px" }}>
+                {/* <h1 style={{ color: "white" }}>STUDENT MANAGEMENT SYSTEM</h1> */}
+                <Segment style={{ width: "20%", marginTop: "-100px" }}>
                     <div style={{ display: "flex", alignContent: "center", justifyContent: "center" }}>
                         <Icon name='student' size='massive' color='teal' />
                     </div>
@@ -64,21 +78,34 @@ class Login extends React.Component {
                             <input placeholder='Password' type="password" name="password" onChange={(e) => this.manageChange(e)} />
                         </Form.Field>
                         <Form.Field>
-                            <Checkbox toggle label="Login as admin" onClick={() => {
+                            <Checkbox toggle label="Login as Admin" onClick={() => {
+                                this.setState({ "admin": !this.state.admin })
                                 if (this.state.isadmin === true) {
                                     this.state.isadmin = false
+                                    this.state.loginas = "Login as Student/Teacher"
                                 }
                                 else {
                                     this.state.isadmin = true
+                                    this.state.loginas = "Login as Admin"
                                 }
                             }} />
                         </Form.Field>
                         {/* <Form.Field>
                             <Checkbox label='I agree to the Terms and Conditions' />
                         </Form.Field> */}
-                        <Button type='submit' fluid onClick={() => this.statusLogin()}>Login</Button>
+                        <p style={{
+                            color: "red",
+                            fontWeight: "bolder",
+                            display: (this.state.loginfail) ? "" : "none"
+                        }}>{this.state.failloginmsg}</p>
+                        <Form.Group>
+                            <Button type='submit' style={{ flex: 1 }} onClick={() => this.statusLogin()}>{this.state.loginas}</Button>
+                        </Form.Group>
                         <Divider horizontal>Or</Divider>
-                        <Button type='submit' fluid onClick={() => this.signup()}>Sign up</Button>
+                        <Form.Group style={{ display: "flex", alignContent: "center", justifyContent: "center" }}>
+                            <Button type='submit' style={{ flex: 1 }} onClick={() => this.signup()}>Sign up</Button>
+                            {/* <Divider vertical>or</Divider> */}
+                        </Form.Group>
                     </Form>
                 </Segment>
                 <div style={{ position: "fixed", bottom: "0", height: "30px", width: "100%" }}>

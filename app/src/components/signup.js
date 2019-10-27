@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { Form, Segment, Divider, Button, Grid, Dropdown, Label } from 'semantic-ui-react'
+import { Form, Segment, Divider, Button, Grid, Dropdown, Checkbox } from 'semantic-ui-react'
+import fetchData from './apicalls'
+
+var api = new fetchData()
+
 const options = [
     { key: 'm', text: 'Male', value: 'male' },
     { key: 'f', text: 'Female', value: 'female' },
@@ -36,18 +40,49 @@ const university = [
     { key: 'pes', value: "pesu", text: 'PESIT' },
     { key: 'xyz', value: "xyz", text: 'XYZ' }
 ]
+api.subjects().then((value)=> {
+    var len = Object.keys(value).length
+    for(let i = 0; i < len; i++){
+        subjects.push({value: value[i].value, text: value[i].text})
+    }
+})
 
 const subjects = [
-    { key: "atc", value: "57CSE21", text: 'Automata Theory' },
-    { key: "dc", value: "57CSE20", text: 'Data Communication' }
+]
+
+const dept = [
+    { key: "ise", value: "ise", text: 'Information Science' },
+    { key: "cse", value: "cse", text: 'Computer Science' }
 ]
 
 
 class FormExampleSubcomponentControl extends Component {
-    state = {}
+    state = {coordinator: false, subjects: {}, status: false, statusmsh: "", statusColor: ""}
 
     handleChange = (e, { value }) => this.setState({ value })
 
+    manageChange = (e) => {
+        // console.log(e.target.name)
+        this.state[e.target.name] = e.target.value
+    }
+
+    singup = () => {
+        api.singup(this.state).then((value) => {
+            console.log(value)
+            if(value.status === "error"){
+                console.log(this.state.status)
+                this.state.statusmsh = "Incorrect data or the user already exists"
+                this.state.statusColor = "red"
+                this.setState({status: true})
+            }
+            else if(value.status === "success"){
+                console.log(value)
+                this.state.statusmsh = "Success! Please go back and login"
+                this.state.statusColor = "green"
+                this.setState({status: true})
+            }
+        })
+    }
     render() {
         const { value } = this.state
         return (
@@ -66,10 +101,24 @@ class FormExampleSubcomponentControl extends Component {
                         <Segment style={{ width: "100%", marginTop: "50px", marginLeft: 0 }}>
                             <Form>
                                 <Form.Group widths='equal'>
-                                    <Form.Input fluid label='First name' placeholder='First name' />
-                                    <Form.Input fluid label='Last name' placeholder='Last name' />
+                                    <Form.Input
+                                        fluid
+                                        onChange={(e) => this.manageChange(e)}
+                                        label='First name'
+                                        name="firstName"
+                                        placeholder='First name' />
+                                    <Form.Input
+                                        fluid
+                                        label='Last name'
+                                        onChange={(e) => this.manageChange(e)}
+                                        name="lastName"
+                                        placeholder='Last name' />
                                     <Form.Select
                                         fluid
+                                        id='gender'
+                                        value={this.state.gender}
+                                        onChange={(e, value) => this.setState({ gender: value.value })}
+                                        // onChange={()=>console.log("something happend")}
                                         label='Gender'
                                         options={options}
                                         placeholder='Gender'
@@ -77,11 +126,18 @@ class FormExampleSubcomponentControl extends Component {
                                 </Form.Group>
                                 <Form.Group widths='equal'>
                                     {/* <Form.Input fluid label='First name' placeholder='dept' /> */}
-                                    <Form.Input fluid label='Last name' placeholder='Parent Name' />
+                                    <Form.Input
+                                        fluid
+                                        label='Last name'
+                                        onChange={(e) => this.manageChange(e)}
+                                        name="parentName"
+                                        placeholder='Parent Name' />
                                     <Form.Select
                                         fluid
+                                        name="dept"
+                                        onChange={(e, value) => this.setState({ dept: value.value })}
                                         label='Department'
-                                        options={options}
+                                        options={dept}
                                         placeholder='EX: ISE'
                                     />
 
@@ -109,25 +165,54 @@ class FormExampleSubcomponentControl extends Component {
                                     onChange={this.handleChange}
                                 />
                             </Form.Group> */}
-                                <Form.TextArea label='Address' placeholder='Type Here' />
+                                <Form.TextArea
+                                    label='Address'
+                                    name="address"
+                                    placeholder='Type Here'
+                                    onChange={(e) => this.manageChange(e)}
+                                />
                                 <Divider />
                                 <Dropdown
                                     // clearable
                                     fluid
                                     // multiple
                                     search
+                                    name="university"
+                                    onChange={(e, value) => this.setState({ university: value.value })}
                                     selection
                                     options={university}
                                     placeholder="Choose your university"
                                 />
                                 <Form.Group widths='equal'>
                                     {/* <Form.Input fluid label='First name' placeholder='dept' /> */}
-                                    <Form.Input fluid label='University Seat Number' placeholder='EX: 1PE17IS011' />
-                                    <Form.Input fluid label='Password' placeholder='EX: password123' />
+                                    <Form.Input
+                                        fluid label='University Seat Number'
+                                        name="usn"
+                                        placeholder='EX: 1PE17IS011'
+                                        onChange={(e) => this.manageChange(e)}
+                                    />
+                                    <Form.Input
+                                        fluid
+                                        label='Password'
+                                        name="password"
+                                        placeholder='EX: password123'
+                                        onChange={(e) => this.manageChange(e)}
+                                    />
 
                                 </Form.Group>
                                 <Divider />
-                                <Segment>
+                                <Form.Field>
+                                    <Checkbox toggle label="Signup as Coordinator" onClick={() => {
+                                        this.setState({ coordinator: !this.state.coordinator })
+                                        if (this.state.coordinator === true) {
+                                            this.state.coordinator = false
+                                        }
+                                        else {
+                                            this.state.coordinator = true
+                                        }
+                                    }} />
+                                </Form.Field>
+                                <Segment style = {{display: (this.state.coordinator)?"none": ""}}>
                                     <b>Subject details</b>
                                     <Form.Group widths='equal'>
                                         {/* <Form.Input fluid label='First name' placeholder='dept' /> */}
@@ -135,9 +220,11 @@ class FormExampleSubcomponentControl extends Component {
                                         <Dropdown
                                             clearable
                                             fluid
+                                            name="subjects"
                                             multiple
                                             search
                                             selection
+                                            onChange={(e, value) => this.setState({ subjects: value.value })}
                                             options={subjects}
                                             placeholder='Subject'
                                         />
@@ -146,7 +233,11 @@ class FormExampleSubcomponentControl extends Component {
                                     </Form.Group>
                                     {/* <Button content='Add More Subject' icon='plus' labelPosition='left' /> */}
                                 </Segment>
-                                <Form.Button fluid>Submit</Form.Button>
+                                <p style={{fontWeight: "bolder", 
+                                display: (this.state.status)?"":"none",
+                                color: this.state.statusColor,
+                                }}>{this.state.statusmsh}</p>
+                                <Form.Button fluid onClick={() => this.singup()}>Submit</Form.Button>
                                 <Divider horizontal>or</Divider>
                                 <Form.Button fluid onClick={() => this.props.history.goBack()}>Login</Form.Button>
                             </Form>

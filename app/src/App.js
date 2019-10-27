@@ -7,6 +7,7 @@ import { Router, Route, Redirect, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history'
 import Dashboard from './components/user'
 import Signup from './components/signup'
+import Admin from './components/admin'
 const newHistory = createBrowserHistory();
 
 function Rotutes() {
@@ -16,6 +17,7 @@ function Rotutes() {
         <Switch>
           <Route path="/user" component={Dashboard} />
           <Route path="/signup" component={Signup} />
+          <Route path="/admin" component={Admin} />
           <Route path="/" component={Home} />
         </Switch>
       </div>

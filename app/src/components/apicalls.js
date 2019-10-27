@@ -44,6 +44,26 @@ class fetchData {
     }
 
 
+    async singup(formdata){
+        console.log(formdata)
+        const response = await fetch("http://127.0.0.1:5000/signup", {
+            method: 'POST',
+            body: JSON.stringify(formdata),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const myjson = await response.json()
+        return myjson
+    }
+
+    async subjects(){
+        const response = await fetch("http://127.0.0.1:5000/subjects")
+        const myJson = await response.json()
+        return myJson
+    }
+
+
 }
 
 export default fetchData;

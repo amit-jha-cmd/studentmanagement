@@ -17,7 +17,7 @@ export default class AccordionExampleStyled extends Component {
         const { activeIndex } = this.state
 
         return (
-            <Accordion styled>
+            <Accordion styled style={{marginBottom: 10}}>
                 <Accordion.Title
                     active={activeIndex === 0}
                     index={0}
