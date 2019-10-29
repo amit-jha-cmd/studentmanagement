@@ -99,3 +99,15 @@ CREATE TRIGGER before_insert_id
     END$$
 
 DELIMITER ;
+
+
+
+WORKING
+
+delimeter /
+create trigger iamakrsTrigger after insert on courses
+for each row
+begin
+insert into iamarks(ssrn, subcode, ia1, ia2, ia3, finalmarks) values (new.ssrn, new.subcode, 0, 0, 0, 0);
+end /
+delimiter ;

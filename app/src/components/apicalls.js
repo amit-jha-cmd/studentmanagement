@@ -63,6 +63,11 @@ class fetchData {
         return myJson
     }
 
+    async userDetails(srn){
+        const response = await fetch("http://127.0.0.1:5000/user/" + srn)
+        const myjson = await response.json()
+        return myjson
+    }
 
 }
 

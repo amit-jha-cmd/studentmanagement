@@ -6,14 +6,14 @@ import Btngrp from './btngroup'
 const ModalExampleTopAligned = (props) => (
   <Modal trigger={<Button>Show Details</Button>} centered={false}>
     <Modal.Header>Student details</Modal.Header>
-    {props.data.then((value)=>{console.log(value)})}
+    {/* {props.data.then((value)=>{console.log(value)})} */}
     <Modal.Content image>
-        <Image wrapped size='medium' src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
+        {/* <Image wrapped size='medium' src='https://react.semantic-ui.com/images/avatar/large/matthew.png' /> */}
             <div className="stdinfo">
                 <Segment>
-                    {console.log(props.json)}
-                    <h3>{props.name}</h3>
-                    <p>{props.usn}</p>
+                    {/* {console.log(props.json)} */}
+                    <h3>Amit Jha</h3>
+                    <p>1PE17IS011</p>
                     <Label>
                         Attendance
                         <Label.Detail>79.8%</Label.Detail>
@@ -23,10 +23,9 @@ const ModalExampleTopAligned = (props) => (
             </div>
     </Modal.Content>
     <Modal.Content>
-        <Btngrp />
-    </Modal.Content>
-    <Modal.Content>
-        <Marks />
+        <Segment>
+            
+        </Segment>
     </Modal.Content>
   </Modal>
 )

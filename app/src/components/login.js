@@ -38,10 +38,13 @@ class Login extends React.Component {
         api.login(this.state.username,
             this.state.password,
             this.state.isadmin).then((value) => {
-                console.log(value)
-                if (value.status === "success" && value.who === "student/teacher") {
-                    console.log(this.props)
-                    this.props.history.push("/user")
+                
+                if (value.status === "success" && value.who === "student") {
+                    console.log(value)
+                    this.props.history.push({pathname: '/user', state: {user: value.username}})
+                }
+                else if (value.status === "success" && value.who === "teacher") {
+                    this.props.history.push({pathname: "/coordinator", state:{user: value.username} })
                 }
                 else if (value.status === "success" && value.who === "admin") {
                     this.props.history.push("/admin")

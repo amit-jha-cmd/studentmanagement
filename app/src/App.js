@@ -8,6 +8,7 @@ import { createBrowserHistory } from 'history'
 import Dashboard from './components/user'
 import Signup from './components/signup'
 import Admin from './components/admin'
+import Coordinator from './components/coordniator'
 const newHistory = createBrowserHistory();
 
 function Rotutes() {
@@ -15,9 +16,10 @@ function Rotutes() {
     <Router history={newHistory}>
       <div>
         <Switch>
-          <Route path="/user" component={Dashboard} />
+          <Route path="/user/" component={Dashboard} />
           <Route path="/signup" component={Signup} />
           <Route path="/admin" component={Admin} />
+          <Route path="/coordinator" component={Coordinator } />
           <Route path="/" component={Home} />
         </Switch>
       </div>
