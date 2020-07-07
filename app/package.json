@@ -7,7 +7,7 @@
     "chart.js": "^2.9.0",
     "faker": "^4.1.0",
     "install": "^0.13.0",
-    "npm": "^6.11.2",
+    "npm": "^6.14.6",
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-chartjs-2": "^2.8.0",
